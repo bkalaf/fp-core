@@ -1,0 +1,23 @@
+{
+  "name": "fp-core",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Bobby Kalaf <bobby.kalaf@outlook.com> (https://github.com/bkalaf)",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@types/jest": "^25.2.2",
+    "@types/node": "^14.0.1",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "ts-jest": "^25.5.1",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2"
+  },
+  "dependencies": {
+    "@types/webdriverio": "^5.0.0",
+    "@wdio/cli": "^6.1.11",
+    "tsconfig-paths": "^3.9.0",
+    "webdriverio": "^6.1.11"
+  }
+}
