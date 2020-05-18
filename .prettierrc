@@ -1,0 +1,16 @@
+{
+    "arrowParens": "avoid",
+    "tabWidth": 4,
+    "useTabs": false,
+    "bracketSpacing": true,
+    "endOfLine": "lf",
+    "parser": "typescript",
+    "jsxBracketSameLine": false,
+    "jsxSingleQuote": false,
+    "quoteProps": "as-needed",
+    "singleQuote": true,
+    "htmlWhitespaceSensitivity": "css",
+    "semi": false,
+    "trailingComma": "none",
+    "vueIndentScriptAndStyle": false
+}

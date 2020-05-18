@@ -1,4 +1,4 @@
-import { eq } from "./eq";
+import { eq } from "../fp/eq";
 
 export function isType<T>(s: string) {
     return function(x?: any): x is undefined {

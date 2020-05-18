@@ -1,0 +1,1 @@
+{"version":3,"file":"replace.js","sourceRoot":"","sources":["../../src/text/replace.ts"],"names":[],"mappings":";;;AAAA,SAAgB,OAAO,CAAC,MAAc;IAClC,OAAO,UAAU,WAAmB;QAChC,OAAO,UAAU,OAAe;YAC5B,OAAO,OAAO,CAAC,OAAO,CAAC,MAAM,EAAE,WAAW,CAAC,CAAC;QAChD,CAAC,CAAC;IACN,CAAC,CAAC;AACN,CAAC;AAND,0BAMC"}

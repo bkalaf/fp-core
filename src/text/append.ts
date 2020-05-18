@@ -14,12 +14,6 @@ export const prepend = join("");
 export const concat = join("");
 export const append = flip(prepend);
 
-export function splitAt(delimiter: string) {
-    return function(baseStr: string) {
-        return baseStr.split(delimiter);
-    }
-}
-
 export const remove = flip(replace)("");
 
 export function dropTil(start: number) {

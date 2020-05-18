@@ -1,4 +1,4 @@
-import { eq } from './eq';
+import { eq } from '../fp/eq';
 import { isEmpty } from './isEmpty';
 import { ofCharArray } from './ofCharArray';
 import { substring } from './substring';

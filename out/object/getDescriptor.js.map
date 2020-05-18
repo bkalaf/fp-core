@@ -1,0 +1,1 @@
+{"version":3,"file":"getDescriptor.js","sourceRoot":"","sources":["../../src/object/getDescriptor.ts"],"names":[],"mappings":";;;AAAQ,IAAA,wBAAwB,GAAK,MAAM,yBAAX,CAAY;AAE/B,QAAA,aAAa,GAAG,UAAC,GAAW,EAAE,IAAY;IACnD,OAAO,CAAC,GAAG,CAAC,cAAY,GAAG,eAAU,IAAM,CAAC,CAAA;IAC5C,OAAO,wBAAwB,CAAC,GAAG,EAAC,IAAI,CAAC,CAAC;AAC9C,CAAC,CAAA"}
