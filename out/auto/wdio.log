@@ -1,0 +1,13 @@
+2020-05-18T17:15:47.845Z INFO webdriverio: Initiate new session using the devtools protocol
+2020-05-18T17:15:47.847Z INFO devtools: Launch Google Chrome with flags: --disable-extensions --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-sync --metrics-recording-only --disable-default-apps --mute-audio --no-first-run --disable-hang-monitor --disable-prompt-on-repost --disable-client-side-phishing-detection --password-store=basic --use-mock-keychain --disable-component-extensions-with-background-pages --disable-breakpad --disable-dev-shm-usage --disable-ipc-flooding-protection --disable-renderer-backgrounding --enable-features=NetworkService,NetworkServiceInProcess --disable-features=site-per-process,TranslateUI,BlinkGenPropertyTrees --window-position=0,0 --window-size=1200,900
+2020-05-18T17:15:48.381Z INFO devtools: Connect Puppeteer with browser on port 58898
+2020-05-18T17:15:48.603Z INFO devtools: COMMAND navigateTo("https://www.publicstorageauctions.com/")
+2020-05-18T17:16:31.704Z INFO devtools: RESULT null
+2020-05-18T17:16:31.722Z INFO devtools: COMMAND findElement("css selector", "#ddlState")
+2020-05-18T17:16:31.732Z INFO devtools: RESULT { 'element-6066-11e4-a52e-4f735466cecf': 'ELEMENT-1' }
+2020-05-18T17:16:31.740Z INFO devtools: COMMAND findElements("css selector", "#ddlState")
+2020-05-18T17:16:31.750Z INFO devtools: RESULT [ { 'element-6066-11e4-a52e-4f735466cecf': 'ELEMENT-2' } ]
+2020-05-18T17:16:31.756Z INFO devtools: COMMAND findElementFromElement("ELEMENT-1", "xpath", "./option[normalize-space(@value) = "CA"]|./optgroup/option[normalize-space(@value) = "CA"]")
+2020-05-18T17:16:31.763Z INFO devtools: RESULT { 'element-6066-11e4-a52e-4f735466cecf': 'ELEMENT-3' }
+2020-05-18T17:16:31.766Z INFO devtools: COMMAND elementClick("ELEMENT-3")
+2020-05-18T17:16:35.793Z INFO devtools: COMMAND executeScript("javascript:setTimeout('__doPostBack('ddlState','')'), 0)", <object>)

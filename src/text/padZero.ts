@@ -1,4 +1,4 @@
-import { assoc } from "../auto/assoc";
+import { assoc } from "../object/assoc";
 import { get } from "../object/get";
 import { isTypeOf } from "../check/isTypeOf";
 

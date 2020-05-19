@@ -1,8 +1,8 @@
 import { isUndefined } from './../text/substring';
-import { curry, curry3 } from 'src/fp/curry';
+import { curry, curry3 } from '../fp/curry';
 import { isEmpty as arrayEmpty } from './../text/isEmpty';
 import { cons } from './cons';
-import { identity } from 'src/fp/identity';
+import { identity } from '../fp/identity';
 
 export interface ICons<T> {
     kind: '@list#cons';

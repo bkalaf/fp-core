@@ -1,7 +1,7 @@
-import { curry, curry3 } from 'src/fp/curry';
+import { curry, curry3 } from '../fp/curry';
 import { isEmpty as arrayEmpty } from '../text/isEmpty';
 import { cons } from './cons';
-import { identity } from 'src/fp/identity';
+import { identity } from '../fp/identity';
 import { Just, Nothing, Maybe } from './maybe';
 
 export interface ILeft<T> {

@@ -1260,6 +1260,14 @@
   dependencies:
     "@wdio/utils" "6.1.8"
 
+"@wdio/sync@^6.1.8":
+  version "6.1.8"
+  resolved "https://registry.yarnpkg.com/@wdio/sync/-/sync-6.1.8.tgz#fec57a42ad32d2bcec8b45ee1d67a7dee9f72188"
+  integrity sha512-oghYrfMcLrVc0zxWUw9TQmUmdPQ8HmE2VMK6tifpOaF+Zo0jfsj2huajos1GPgdYqJV+LoZ3nXtdSYllG6n4gg==
+  dependencies:
+    "@wdio/logger" "6.0.16"
+    fibers "^4.0.1"
+
 "@wdio/utils@6.1.8":
   version "6.1.8"
   resolved "https://registry.yarnpkg.com/@wdio/utils/-/utils-6.1.8.tgz#117b54735b942a768020814de666fd29f35fbbb1"
@@ -2188,6 +2196,11 @@ delayed-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
 
+detect-libc@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
+  integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
+
 detect-newline@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
@@ -2465,6 +2478,13 @@ fd-slicer@~1.1.0:
   integrity sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=
   dependencies:
     pend "~1.2.0"
+
+fibers@^4.0.1:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/fibers/-/fibers-4.0.3.tgz#dda5918280a48507f5d8a96dd9a525e8f4a532e2"
+  integrity sha512-MW5VrDtTOLpKK7lzw4qD7Z9tXaAhdOmOED5RHzg3+HjUk+ibkjVW0Py2ERtdqgTXaerLkVkBy2AEmJiT6RMyzg==
+  dependencies:
+    detect-libc "^1.0.3"
 
 figures@^3.0.0:
   version "3.2.0"

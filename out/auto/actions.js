@@ -38,8 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.page = exports.postBack = exports.setDropDownValue = exports.click = void 0;
 var webdriverio_1 = require("webdriverio");
-var table_1 = require("./table");
 var getElement_1 = require("./getElement");
+var table_1 = require("./table");
 function click(b) {
     return function (ele) {
         return ele.click();

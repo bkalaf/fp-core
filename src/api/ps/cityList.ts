@@ -1,6 +1,7 @@
-import { IAuctionDetails } from 'src/auto/IAuctionDetails';
+import { IAuctionDetails } from '../../types/IAuctionDetails';
 import { PromiseOp } from './../../datastruct/promise';
 import { curry } from './../../fp/curry';
+import { doit } from '../../auto/controls';
 import { flip } from './../../fp/flip';
 import { invertObj } from '../../object/invertObj';
 import { processPage } from './../../auto/table';
@@ -234,19 +235,4 @@ const filteredCities = Object.keys(groupByCounty).filter(n => {
 
 console.log(filteredCities);
 
-
-const b = () => (remote({
-	capabilities: {
-		browserName: 'chrome'
-	}
-}) as any) as Promise<WebdriverIO.BrowserObject>;
-const pp = flip(curry(processPage));
-
-const pp2 = (s: string) => PromiseOp.chain(pp(s))(b())
-const reducer = async (pv: Promise<IAuctionDetails[]>, cv: Promise<IAuctionDetails[]>) => {
-    const p = await pv;
-    const c = await cv;
-    return [...p, ...c];
-};
-// filteredCities.map(pp2).reduce(reducer);
-// [ 'San Diego' ].map(pp2).reduce(reducer);
+doit(filteredCities).catch(console.error);

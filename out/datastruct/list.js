@@ -9,10 +9,10 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Op = exports.sequence = exports.traverseArray = exports._traverseArray = exports.lift2a = exports._lift2a = exports.ap = exports.fmap = exports._fmap = exports._ap = exports.chain = exports._chain = exports.ofArray = exports.toArray = exports.join = exports.foldl = exports._foldl = exports.concatList = exports.of = exports.isEmpty = exports.isCons = exports.toCons = exports.toEmpty = void 0;
 var substring_1 = require("./../text/substring");
-var curry_1 = require("src/fp/curry");
+var curry_1 = require("../fp/curry");
 var isEmpty_1 = require("./../text/isEmpty");
 var cons_1 = require("./cons");
-var identity_1 = require("src/fp/identity");
+var identity_1 = require("../fp/identity");
 function toEmpty() {
     return ({ kind: '@list#empty' });
 }

@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Op = exports.toMaybe = exports.sequence = exports.traverseArray = exports._traverseArray = exports.lift2a = exports._lift2a = exports.fmap = exports._fmap = exports.ap = exports._ap = exports.of = exports.chain = exports._chain = exports.isRight = exports.isLeft = exports.toLeft = exports.toRight = void 0;
-var curry_1 = require("src/fp/curry");
+var curry_1 = require("../fp/curry");
 var isEmpty_1 = require("../text/isEmpty");
 var cons_1 = require("./cons");
-var identity_1 = require("src/fp/identity");
+var identity_1 = require("../fp/identity");
 var maybe_1 = require("./maybe");
 function toRight(x) {
     return ({ kind: '@either#right', value: x });

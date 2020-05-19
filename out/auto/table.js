@@ -66,7 +66,6 @@ exports.processPage = exports.processTable = exports.processColumn = exports.OUT
 var fs = __importStar(require("fs-extra"));
 var path = __importStar(require("path"));
 var maybe_1 = require("./../datastruct/maybe");
-var selectors_1 = require("./selectors");
 var compl_1 = require("../fp/compl");
 var flip_1 = require("./../fp/flip");
 var isEmpty_1 = require("./../text/isEmpty");
@@ -216,24 +215,12 @@ function processPage(browser, city) {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, selectors_1.navTo(browser, 'https://publicstorageauctions.com/')];
+                case 0: return [4 /*yield*/, processTable(browser)];
                 case 1:
-                    _a.sent();
-                    return [4 /*yield*/, selectors_1.selectDropDownValue('ddlState')(browser)('CA')];
-                case 2:
-                    _a.sent();
-                    return [4 /*yield*/, selectors_1.selectDropDownValue('ddlCity')(browser)(city)];
-                case 3:
-                    _a.sent();
-                    return [4 /*yield*/, selectors_1.useButton(browser, 'btnSubmit')];
-                case 4:
-                    _a.sent();
-                    return [4 /*yield*/, processTable(browser)];
-                case 5:
                     result = _a.sent();
                     console.log("processed: " + result.length);
                     return [4 /*yield*/, fs.writeFile(exports.OUTPUT_PATH.AUCTIONDATA_OUTPUT(city), JSON.stringify(result))];
-                case 6:
+                case 2:
                     _a.sent();
                     return [2 /*return*/, result];
             }
