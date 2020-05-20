@@ -1,13 +1,8 @@
-import { IAuctionDetails } from '../../types/IAuctionDetails';
-import { PromiseOp } from './../../datastruct/promise';
-import { curry } from './../../fp/curry';
+import { arrayConcat } from '../../collections/array/arrayConcat';
 import { doit } from '../../auto/controls';
-import { flip } from './../../fp/flip';
+import { getValue } from './getValue';
 import { invertObj } from '../../object/invertObj';
-import { processPage } from './../../auto/table';
-import { remote } from 'webdriverio';
-
-export type KeyedType<V> = { [P in keyof typeof counties]: V };
+import { objMerge } from 'src/auto/objMerge';
 
 export const counties = {
     AC: 'ALAMEDA COUNTY',
@@ -61,7 +56,7 @@ export const cities = {
     ['Chula Vista']: counties.SD,
     Chatsworth: counties.LA,
     ['Citrus Heights']: counties.SA,
-    ['City of Industry']: counties.LA,
+    ['City Of Industry']: counties.LA,
     Concord: counties.CC,
     Corona: counties.RV,
     ['Costa Mesa']: counties.OC,
@@ -217,22 +212,13 @@ export const cities = {
 
 export const groupByCounty = invertObj(cities);
 
-export function arrayConcat<T>(left: T[], right: T[]) {
-    return [...left, ...right];
-}
-export function getValue<T>(obj: KeyedObject<T>) {
-    return function(name: string) {
-        return obj[name];
-    }
-}
-
 const filteredCities = Object.keys(groupByCounty).filter(n => {
     const result = soCal.map(nme => (counties as KeyedObject<string>)[nme]).includes(n);
     return result;
 })
     .map(getValue(groupByCounty))
-.reduce((pv, cv) => arrayConcat(pv, cv), [])
+.reduce((pv, cv) => arrayConcat(pv, cv), [] as string[])
 
 console.log(filteredCities);
 
-doit(filteredCities).catch(console.error);
+doit(filteredCities).catch(e => console.error(e.message));

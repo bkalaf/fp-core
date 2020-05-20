@@ -10,6 +10,7 @@ declare global {
         [1]: U;
         length: 2;
     }
+    export type AssociationMap<T, V> = { [P in keyof T]: V } 
     export type NotNull<T> = T extends undefined | null ? never : T;
 }
 

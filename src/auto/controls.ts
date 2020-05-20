@@ -1,113 +1,134 @@
-import { PromiseOp, PromiseOps } from './../datastruct/promise';
 import * as path from 'path';
 
 import {
 	AUCTION_URL,
 	CITY_DDL,
-	CITY_VALUE,
 	IColumnParameters,
 	STATE_DDL,
 	STATE_VALUE,
 	SUBMIT_BUTTON,
+	SUCCESSFUL_INDICATOR,
 	TABLE_START,
-	columnMapping
+	UNSUCCESSFUL_INDICATOR,
+	columnMapping,
+	xformDetails
 } from './../api/ps/auctions';
 import { BrowserObject, remote } from 'webdriverio';
+import { cities, counties } from '../api/ps/cityList';
 
-import { compl } from '../fp/compl';
-import { eq } from '../fp/eq';
+import { IAuctionDetails } from './../types/IAuctionDetails';
+import { composeL } from '../fp/compose';
+import { either } from '../fp/logic/either';
+import { not } from '../fp/logic/not';
+import { objMerge } from './objMerge';
 import { padZero } from '../text';
+import { toClassSelector } from './toClassSelector';
 import { toIDSelector } from './toIDSelector';
-import { writeData } from './writeData';
+import { writeDataToFile } from './writeData';
 
-const onChange = (name: string) => (x: number) => setTimeout('__doPostBack(\'${name}\',\'\'_', x);
-const onchange = onChange('ddlState');
-const onchange2 = onChange('ddlCity\')
-export async function doCity(browser: BrowserObject, cityName: string) {
-	async function nextRow({ b, current, acc }: { b: BrowserObject; current: number; acc: Object[]; }): Promise<Object[]> {
-		const nextID = ["#", TABLE_START, padZero(2)(current.toString()), '_Label1' ].join("")
-		
-		try {
-			console.log(`in try`)
-			const element = await b.$(nextID)
-			await element.waitForExist({ timeout: 5000 });
-		} catch (e) {
-			console.error(`row ${current} not found`);
-			return acc;
-		}
-		const mapping = columnMapping(b);
-		const result = Object.keys(mapping).map(async (n: string) => {
-			const value: IColumnParameters = (mapping as any)[n];
-			const colID = ["#", TABLE_START, padZero(2)(current.toString()), value.suffix ].join("")
-			const element = await browser.$$(colID);
-			const ele = element[value.index]
-			const result = await ele.getText();
-			return constructPropertyObj(n, value, result)
-		});
-		const result2 = await PromiseOp.sequence(result);
-		const data = result.reduce(Object.assign, {});
-		console.log(`result: ${JSON.stringify(data)}`)
-		return nextRow({ b, current: current + 1, acc: [(data as any), ...acc] });
-	}
-	const ele2 = await browser.$(toIDSelector(CITY_DDL));
-	await ele2.waitForExist();
-	await ele2.selectByAttribute('value', cityName);
-	await browser.execute(onChange(CITY_DDL), 0);
-    await browser.pause(4000);
+const sync = require('@wdio/sync').default;
 
-	const ele3 = await browser.$(toIDSelector(SUBMIT_BUTTON));
-	ele3.waitForClickable();
-	ele3.click();
-	const normalizeCityName = normalizeNameOfCity()
-	const outputFn = path.resolve(__dirname, 'data', `${normalizeCityName(cityName)}.json`);
-	
-	try {
-		const noRecords = browser.$('.searchmessage')
-		const table = browser.$(generateFirstRowID())
-		const winner = await Promise.race([noRecords, table]);
-		console.log(`racing: .searchmessage vs. ${table}`)
-		const winText = await winner.getText()
-		console.log(`${cityName}:: ${winText}`);
-		const result = await (compl(eq("No record(s) found."))(winText) ?			
-					   nextRow({ b: browser, current: 2, acc: [] }) :
-					   Promise.resolve([]));
-		await writeData({ [cityName]: result })(outputFn)
-			
-	} catch (e) {
-		console.log(`${normalizeCityName(cityName)} failed. ${e.message}`);
-	}
+
+const onChange = (name: string) => (x: number) => setTimeout('__doPostBack(\'${name}\',\'\')', x);
+function generateNextRowTester(current: number) {
+	return generateNextColumnID(current, '_Label1');
+}
+function generateNextColumnID(current: number, suffix: string) {
+	return toIDSelector([TABLE_START, padZero(2)(current.toString()), suffix].join(''));
 }
 
-function normalizeNameOfCity() {
-	return (name: string) => name.toLowerCase().replace(' ', '_');
+function invertObj(obj: { [name: string]: string }): { [name: string]: string } {
+	return Object.keys(obj).map(k => ({ [obj[k]]: k })).reduce(objMerge, {}) as { [name: string]: string };
+} 
+function getCountyAbbreviationFromLongName(county: string) {
+	const result = invertObj(counties)[county];
+	console.log(`getCountyAbbreviationFromLongName: county: ${county} result: ${result} inverted: ${JSON.stringify(invertObj(counties))}`)
+	return invertObj(counties)[county];
+	// return Object.entries(counties).filter(([k, v]: [string, string]) => eq(county)(v)).map(([k,v]:[string, string]) => k)[0];
+}
+function getCountyAbbreviationFromCityLongName(city: string): string {
+	const fullText = (cities as any)[city];
+	console.log(`fullText: ${fullText}`);
+	return getCountyAbbreviationFromLongName(fullText);
+}
+function calculateOutputFileName(cityName: string) {
+	const countyAbbrev = getCountyAbbreviationFromCityLongName(cityName);
+	const normalizedName = normalizeCityName(cityName);
+	const fn = [normalizedName, '.json'].join('');
+	console.log(`cityName: ${cityName} countryAbbrev: ${countyAbbrev}, normalized: ${normalizedName}, fn: ${fn}`)
+	return path.resolve(process.cwd(), 'data', countyAbbrev, fn);
 }
 
-function generateFirstRowID(): string {
-	return ["#", TABLE_START, "02", "_Label1"].join("");
+function normalizeCityName(name: string) {
+	return name.toLowerCase().replace(' ', '_');
 }
 
-function constructPropertyObj(n: string, value: IColumnParameters, result: string): { [x: string]: any; } {
-	return ({ [n]: value.converter(result) });
+function constructPropertyObj(n: string, converter: Function, result: string): { [x: string]: any; } {
+	return ({ [n]: converter(result) });
 }
-
 export async function doit(cities: string[]) {
+	async function inner2(browser: BrowserObject) {
+		
+	browser.url(AUCTION_URL);
+	browser.$(toIDSelector(STATE_DDL)).selectByAttribute('value', STATE_VALUE)
+	const exe = browser.execute(onChange(STATE_DDL), 0);
+	console.log(`state selected`);
+	
+	const result = cities.map(async city => {
+		console.log(`processing: ${city}`)
+		browser.$(toIDSelector(CITY_DDL)).selectByAttribute('value', city);
+		const exe = browser.execute(onChange(CITY_DDL), 0);
 
-	const browser = await ((remote({
+		browser.$(toIDSelector(SUBMIT_BUTTON)).click();
+		while (not(browser.$(toClassSelector(UNSUCCESSFUL_INDICATOR)).isExisting() || browser.$(toIDSelector(SUCCESSFUL_INDICATOR)).isExisting())) {
+			browser.pause(1000);
+			console.log('pausing... 1 sec');
+		}
+		const hasNoRecords = browser.$(toClassSelector(UNSUCCESSFUL_INDICATOR)).isExisting();
+		let data: {}[] = [];
+		if (hasNoRecords) {
+			console.log('no records found');			
+		} else {
+			console.log('records found');
+			let current = 2;
+			while (browser.$(generateNextRowTester(current)).isExisting()) {
+				console.log(`row ${current}: exists`);
+				const cols = Object.entries(columnMapping(b)).map(([k, v]: [string, IColumnParameters]) => {
+					const { suffix, index, converter } = v;
+					const value = converter(browser.$$(generateNextColumnID(current, suffix))[index].getText())
+					return { [k]: value }
+				});
+				const row = cols.reduce(objMerge);
+				data = [ xformDetails(row as IAuctionDetails, city), ...data];
+				current = current + 1;
+			}
+			console.log(`row ${current} does not exist`);
+			console.log(`${city} processed: ${current - 2} rows`);
+			console.log(`data rows: ${data.length}`);
+		}
+		const cityData = { [normalizeCityName(city)]: data }
+		const wf = composeL(writeDataToFile(cityData),calculateOutputFileName);
+		await wf(city);
+		return cityData;
+	})
+	const fullData = await Promise.all(result);
+	const outputfn = `${Date.now().toString()}.json`;
+	const fullpath = path.resolve(process.cwd(), 'data', outputfn)
+	await writeDataToFile(fullData.reduce(objMerge, {}))(fullpath);
+	}
+	async function inner(browser: BrowserObject) {
+		return sync(() => inner2(browser))
+	}
+	let b = remote({
 		maxInstances: 5,
 		capabilities: {
 			browserName: 'chrome'
 		}
-	}) as any) as Promise<BrowserObject>);
-	await browser.url(AUCTION_URL);
-	const ele = await browser.$(toIDSelector(STATE_DDL));
-	await ele.waitForExist();
-    await ele.selectByAttribute('value', STATE_VALUE);
-	await browser.execute(onchange, 0);
-
-	for (let index = 0; index < cities.length; index++) {
-		const city = cities[index];
-		console.log(`awaiting: ${city}`)
-		await doCity(browser, city);
+	});
+	console.log(`browser: ${b}`)
+	if (b instanceof Promise) {
+		b = await b;
 	}
-		
+	await inner(b);	
+	await b.deleteSession();	
 }	
