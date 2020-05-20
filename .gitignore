@@ -1,4 +1,11 @@
 node_modules
 out/
-data/**/*.json
+data/LA/*.json
+data/OC/*.json
+data/SD/*.json
+data/SB/*.json
+data/VE/*.json
+data/RV/*.json
+data/SR/*.json
+data/LA/*.json
 data-bak/

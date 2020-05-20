@@ -1,15 +1,10 @@
 "use strict";
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getValue = exports.arrayConcat = exports.groupByCounty = exports.cities = exports.counties = void 0;
+exports.groupByCounty = exports.cities = exports.counties = void 0;
+var arrayConcat_1 = require("../../collections/array/arrayConcat");
 var controls_1 = require("../../auto/controls");
+var getValue_1 = require("./getValue");
 var invertObj_1 = require("../../object/invertObj");
 exports.counties = {
     AC: 'ALAMEDA COUNTY',
@@ -62,7 +57,7 @@ exports.cities = (_a = {
     _a['Chula Vista'] = exports.counties.SD,
     _a.Chatsworth = exports.counties.LA,
     _a['Citrus Heights'] = exports.counties.SA,
-    _a['City of Industry'] = exports.counties.LA,
+    _a['City Of Industry'] = exports.counties.LA,
     _a.Concord = exports.counties.CC,
     _a.Corona = exports.counties.RV,
     _a['Costa Mesa'] = exports.counties.OC,
@@ -216,22 +211,12 @@ exports.cities = (_a = {
     _a['Woodland Hills'] = exports.counties.LA,
     _a);
 exports.groupByCounty = invertObj_1.invertObj(exports.cities);
-function arrayConcat(left, right) {
-    return __spreadArrays(left, right);
-}
-exports.arrayConcat = arrayConcat;
-function getValue(obj) {
-    return function (name) {
-        return obj[name];
-    };
-}
-exports.getValue = getValue;
 var filteredCities = Object.keys(exports.groupByCounty).filter(function (n) {
     var result = soCal.map(function (nme) { return exports.counties[nme]; }).includes(n);
     return result;
 })
-    .map(getValue(exports.groupByCounty))
-    .reduce(function (pv, cv) { return arrayConcat(pv, cv); }, []);
+    .map(getValue_1.getValue(exports.groupByCounty))
+    .reduce(function (pv, cv) { return arrayConcat_1.arrayConcat(pv, cv); }, []);
 console.log(filteredCities);
-controls_1.doit(filteredCities).catch(console.error);
+controls_1.doit(filteredCities).catch(function (e) { return console.error(e.message); });
 //# sourceMappingURL=cityList.js.map

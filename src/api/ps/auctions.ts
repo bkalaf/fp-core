@@ -1,4 +1,5 @@
 import { IAuctionDetails } from './../../types/IAuctionDetails';
+import { IAuctionInfo } from './IAuctionInfo';
 import { composeL } from "../../fp/compose";
 import { identity } from "../../fp/identity";
 import { objMerge } from '../../auto/objMerge';
@@ -41,11 +42,11 @@ export const columnMapping = (b: WebdriverIO.BrowserObject): AssociationMap<IAuc
     contents: asColumnDef(b, '_Label7', 1)
 })
 
-interface IPropertyDetails {
+export interface IPropertyDetails {
     facilityNumber: number;
     facilityLongName: string;
 }
-interface IRenterDetails {
+export interface IRenterDetails {
     renterName: string;
     unitNumber: string;
 }
@@ -75,6 +76,11 @@ export function parsePropertyName(auctionDetails: IAuctionDetails, key: keyof IA
 export function parseInfo<T, U>(input: T, name: string, func: (x: T, y: keyof T) => U) {
     return { [name]: func(input, name as keyof T) }
 }
+export interface IAuctionDate {
+    iso: number;
+    date: string;
+    time: string;
+}
 export function xformDetails(details: IAuctionDetails, cityName: string) {
     const parsed = [ parseInfo(details, 'contents', parseContents),
                      parseInfo(details, 'customerName', parseCustomerName),
@@ -85,5 +91,5 @@ export function xformDetails(details: IAuctionDetails, cityName: string) {
                          time: new Date(Date.parse(details.auctionDate)).toTimeString()
                      }},
                      { propertyCity: cityName } ];
-    return parsed.reduce(objMerge, details) as { [n: string]: any }
+    return parsed.reduce(objMerge, details) as IAuctionInfo
 }

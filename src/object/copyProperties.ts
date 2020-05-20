@@ -2,13 +2,12 @@ import {
 	isBoolean,
 	isFunction,
 	isNotNullOrUndefined,
-	isNotUndefined,
 	isNullOrUndefined,
 	isNumber,
 	isObject,
 	isString,
 	isSymbol,
-	isUndefined
+	isUndef
 } from '../check/isTypeOf';
 
 import { any } from '../fp/logic/any';
@@ -31,7 +30,7 @@ export function _merge(source1: any, source2: any) {
         if (isArray(result1) && isArray(result2)) {
 			return [ ...result1, ...result2 ];
 		} else if (isFunction(result1) || isFunction(result2)) {
-            const basedescr = isUndefined(result1) ? descr2 : descr1;
+            const basedescr = isUndef(result1) ? descr2 : descr1;
             const d = dest as any;
             return basedescr?.value;
 		} else if (isObject(result1) && isObject(result2)) {

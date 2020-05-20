@@ -29,7 +29,7 @@ function _merge(source1, source2) {
             return __spreadArrays(result1, result2);
         }
         else if (isTypeOf_1.isFunction(result1) || isTypeOf_1.isFunction(result2)) {
-            var basedescr = isTypeOf_1.isUndefined(result1) ? descr2 : descr1;
+            var basedescr = isTypeOf_1.isUndef(result1) ? descr2 : descr1;
             var d = dest;
             return basedescr === null || basedescr === void 0 ? void 0 : basedescr.value;
         }
